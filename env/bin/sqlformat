@@ -1,4 +1,4 @@
-#!/Users/aviralchauhan/blednetAI/env/bin/python3
+#!/Users/aviralchauhan/blendnet_AI/env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

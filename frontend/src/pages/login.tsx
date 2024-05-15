@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,16 +12,43 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import backgroundImage from "../assets/background.jpg";
-import React from "react";
+import api from "../api";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
-export default function SignIn() {
-  const handleSubmit = (event) => {
+export default function Login() {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    
+    try {
+      const data = new FormData();
+    
+      data.append("username", username)
+      data.append("password", password)
+
+      console.log({
+        username: data.get("username"),
+        password: data.get("password"),
+      });
+
+      const res = await api.post("/api/token/", data);
+
+      if (res.status === 200) {
+        alert("User logged in successfully");
+        localStorage.setItem(ACCESS_TOKEN, res.data.access);
+        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+        console.log(res.data)
+        navigate("/dashboard");
+      }
+
+    } catch (error) {
+      alert(error)
+    }
+
   };
 
 
@@ -56,10 +84,12 @@ export default function SignIn() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="User Name"
+                name="username"
+                autoComplete="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 autoFocus
               />
               <TextField
@@ -70,6 +100,8 @@ export default function SignIn() {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
               <Button
@@ -82,7 +114,7 @@ export default function SignIn() {
               </Button>
               <Grid container justifyContent="center">
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

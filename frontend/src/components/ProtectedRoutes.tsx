@@ -1,11 +1,19 @@
+import { ReactNode, useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode, { JwtPayload } from "jwt-decode";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
-function ProtectedRoute({ children }) {
-    const [isAuthorized, setIsAuthorized] = useState(false);
+interface ProtectedRouteProps {
+    children: ReactNode;
+}
+
+interface DecodedToken extends JwtPayload {
+    exp: number;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
 
     useEffect(() => {
         checkAuth().catch(() => {
@@ -13,17 +21,17 @@ function ProtectedRoute({ children }) {
         });
     }, []);
 
-    const refreshToken = async () => {
+    const refreshToken = async (): Promise<void> => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
 
         try {
             const response = await api.post("/api/token/refresh/", {
-                refresh_token: refreshToken,
+                refresh_token: refreshToken, 
             });
-            
+
             if (response.status === 200) {
-                const token = response.data.access_token;
-                localStorage.setItem("ACCESS_TOKEN", token);
+                const token = response.data.access;
+                localStorage.setItem(ACCESS_TOKEN, token);
                 setIsAuthorized(true);
             } else {
                 setIsAuthorized(false);
@@ -32,16 +40,16 @@ function ProtectedRoute({ children }) {
             console.error(error);
             setIsAuthorized(false);
         }
-    }
+    };
 
-    const checkAuth = async () => {
+    const checkAuth = async (): Promise<void> => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) {
             setIsAuthorized(false);
             return;
         }
 
-        const decoded = jwtDecode(token); 
+        const decoded: DecodedToken = decode(token);
         const tokenExpiration = decoded.exp;
         const currentTime = Date.now() / 1000;
 
@@ -50,17 +58,13 @@ function ProtectedRoute({ children }) {
         } else {
             setIsAuthorized(true);
         }
-    }
+    };
 
     if (isAuthorized === null) {
         return <div>Loading...</div>;
     }
 
-    if (isAuthorized) {
-        return children;
-    } else {
-        return <Navigate to="/login" />;
-    }
-} 
+    return isAuthorized ? children : <Navigate to="/login" />;
+};
 
 export default ProtectedRoute;

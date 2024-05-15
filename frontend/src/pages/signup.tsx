@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -11,18 +12,45 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 import backgroundImage from "../assets/background.jpg";
+import api from "../api";
 
-export default function SignIn() {
+export default function SignUp() {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    navigate("/login");
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    
+    try {
+      const data = new FormData();
+      console.log({
+        firstName: data.get("fname"),
+        lastName: data.get("lname"),
+        username: data.get("username"),
+        email: data.get("email"),
+        password: data.get("password"),
+      });
+
+      data.append("first_name", fname);
+      data.append("last_name", lname);
+      data.append("username", username);
+      data.append("email", email);
+      data.append("password", password);
+
+      const res = await api.post("/api/user/register/", data);
+
+      if (res.status === 201) {
+        alert("User registered successfully");
+        navigate("/Login");
+      }
+    } catch (error) {
+      alert(error)
+    }
   };
 
   return (
@@ -63,6 +91,8 @@ export default function SignIn() {
                     label="First Name"
                     name="fname"
                     autoComplete="fname"
+                    value={fname}
+                    onChange={(e) => setFname(e.target.value)}
                     autoFocus
                   />
                 </Grid>
@@ -75,9 +105,23 @@ export default function SignIn() {
                     label="Last Name"
                     name="lname"
                     autoComplete="lname"
+                    value={lname}
+                    onChange={(e) => setLname(e.target.value)}
                   />
                 </Grid>
               </Grid>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoFocus
+              />
               <TextField
                 margin="normal"
                 required
@@ -86,6 +130,8 @@ export default function SignIn() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoFocus
               />
               <TextField
@@ -97,6 +143,8 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <Button
                 type="submit"
@@ -106,13 +154,6 @@ export default function SignIn() {
               >
                 Sign Up
               </Button>
-              <Grid container justifyContent="center">
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
             </Box>
           </Box>
         </Grid>
