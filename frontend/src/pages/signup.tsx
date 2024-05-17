@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -14,7 +15,7 @@ import Container from "@mui/material/Container";
 import backgroundImage from "../assets/background.jpg";
 import api from "../api";
 
-export default function SignUp() {
+const SignUp: React.FC = () =>{
   const navigate = useNavigate();
 
   const [fname, setFname] = useState("");
@@ -44,7 +45,7 @@ export default function SignUp() {
 
       const res = await api.post("/api/user/register/", data);
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         alert("User registered successfully");
         navigate("/Login");
       }
@@ -161,3 +162,5 @@ export default function SignUp() {
     </Container>
   );
 }
+
+export default SignUp;

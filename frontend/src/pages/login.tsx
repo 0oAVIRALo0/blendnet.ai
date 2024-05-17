@@ -11,6 +11,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import { useStateContext } from "../contexts/ContextProvider";
+
 import backgroundImage from "../assets/background.jpg";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
@@ -20,6 +22,7 @@ export default function Login() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { updateAuthStatus } = useStateContext();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,15 +33,11 @@ export default function Login() {
       data.append("username", username)
       data.append("password", password)
 
-      console.log({
-        username: data.get("username"),
-        password: data.get("password"),
-      });
-
       const res = await api.post("/api/token/", data);
 
       if (res.status === 200) {
         alert("User logged in successfully");
+        updateAuthStatus(true);
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
         console.log(res.data)
@@ -50,7 +49,6 @@ export default function Login() {
     }
 
   };
-
 
   return (
     <Container component="main" maxWidth="xl">
