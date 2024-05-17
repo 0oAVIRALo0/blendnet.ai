@@ -12,11 +12,15 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import { useStateContext } from "../contexts/ContextProvider";
+
 import backgroundImage from "../assets/background.jpg";
 import api from "../api";
 
 const SignUp: React.FC = () =>{
   const navigate = useNavigate();
+
+  const { updateAuthStatus } = useStateContext();
 
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -45,9 +49,10 @@ const SignUp: React.FC = () =>{
 
       const res = await api.post("/api/user/register/", data);
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         alert("User registered successfully");
-        navigate("/Login");
+        updateAuthStatus(true);
+        navigate("/login");
       }
     } catch (error) {
       alert(error)

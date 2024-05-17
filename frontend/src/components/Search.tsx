@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 
 import SearchResult from "./SearchResult";
 
@@ -61,13 +62,16 @@ const SearchBar = ({ onSelectAttendant }) => {
   }
 
   return (
-    <div className="w-full">
-      <div className="flex w-full">
+    <div className="w-50 m-5">
+      <Typography variant="h5" gutterBottom>
+        Search Stock Symbols
+      </Typography>
+      <div className="flex w-50">
         <TextField
           id="search-bar"
           className="text"
           variant="outlined"
-          placeholder="Search..."
+          placeholder="Search for stock symbols..."
           size="small"
           value={searchTerm}
           onChange={handleChange}
