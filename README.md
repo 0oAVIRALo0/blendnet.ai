@@ -44,25 +44,37 @@ To run this project locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone <https://github.com/your-username/stock-symbol-search.git>
+   git clone https://github.com/your-username/stock-symbol-search.git
    ```
 
-2. Navigate to the project directory:
+2. Navigate to the backend directory:
 
    ```bash
-   cd stock-symbol-search
+   cd backend
    ```
 
-3. Install the dependencies:
+3. Run the server:
+
+   ```bash
+   python manage.py runserver
+   ```
+
+4. For frontend:
+
+   ```bash
+   cd frontend
+   ```
+   
+5. Install all the dependencies:
 
    ```bash
    npm install
    ```
 
-4. Start the development server:
+6. Run the frontend:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 The application should now be running on `http://localhost:3000`.
