@@ -1,5 +1,3 @@
-# blendnet_AI
-
 # Stock Symbol Search Application
 
 This is a React-based web application that allows users to search for stock symbols and add them to a watchlist. The application leverages the Alpha Vantage API for fetching stock symbols and incorporates user authentication, protected routes, and a responsive design.
