@@ -1,3 +1,4 @@
+import React from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -20,7 +21,20 @@ ChartJS.register(
   Legend
 );
 
-const LineGraph = ({ chartData }) => {
+interface LineGraphProps {
+  chartData: {
+    labels: string[],
+    datasets: {
+      label: string,
+      data: number[],
+      fill: boolean,
+      borderColor: string,
+      tension: number,
+    }[],
+  };
+}
+
+const LineGraph: React.FC<LineGraphProps> = ({ chartData }) => {
   const options = {
     responsive: true,
     height: 150,

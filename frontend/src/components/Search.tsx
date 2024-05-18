@@ -15,7 +15,7 @@ interface SearchResult {
   '2. name': string;
 }
 
-const SearchBar = ({ onSelectAttendant }) => {
+const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
