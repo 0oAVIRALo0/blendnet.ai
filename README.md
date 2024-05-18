@@ -46,7 +46,7 @@ To run this project locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone <https://github.com/your-username/stock-symbol-search.git>
+   git clone https://github.com/your-username/blendnet.ai.git
 
    ```
 
