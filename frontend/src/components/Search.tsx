@@ -42,7 +42,7 @@ const SearchBar = ({ onSelectAttendant }) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchTerm}&apikey=demo`);
+      const response = await fetch(`https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${searchTerm}&apikey=BAN9XP8JBJLFQZXN`);
       const data = await response.json();
       console.log(data.bestMatches);
       setSearchResults(data.bestMatches);

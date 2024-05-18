@@ -38,7 +38,7 @@ const Home: React.FC = () => {
     const symbol = event.target.value;
     setSelectedSymbol(symbol);
     try {
-      const response = await api.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=demo`);
+      const response = await api.get(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=BAN9XP8JBJLFQZXN`);
       const data = response.data;
       console.log("Fetched data:", data);
       dataset(data);
